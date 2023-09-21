@@ -1,0 +1,240 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" class="theme-fs-md">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>PopTrend</title>
+    <!-- Config Options -->
+    <meta name="setting_options"
+          content='{&quot;saveLocal&quot;:&quot;sessionStorage&quot;,&quot;storeKey&quot;:&quot;huisetting&quot;,&quot;setting&quot;:{&quot;theme_scheme_direction&quot;:{&quot;value&quot;:&quot;ltr&quot;},&quot;theme_scheme&quot;:{&quot;value&quot;:&quot;light&quot;},&quot;theme_color&quot;:{&quot;colors&quot;:{&quot;--{{prefix}}primary&quot;:&quot;#50b5ff&quot;,&quot;--{{prefix}}info&quot;:&quot;#d592ff&quot;},&quot;value&quot;:&quot;theme-color-default&quot;},&quot;sidebar_type&quot;:{&quot;value&quot;:[]},&quot;sidebar_menu_style&quot;:{&quot;value&quot;:&quot;navs-rounded-all&quot;},&quot;footer&quot;:{&quot;value&quot;:&quot;default&quot;}}}'>
+    <!-- End Config Options -->
+    <link rel="shortcut icon" href="/images/favicon.ico"/>
+    <link rel="stylesheet" href="/css/libs.min.css">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body class="  ">
+<!-- Wrapper Start -->
+<div class="wrapper">
+
+    <!-- Top Navigation Bar -->
+    <div th:insert="~{fragment/top-navbar :: top-bar}"></div>
+
+    <div id="content-page" class="content-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card-header d-flex justify-content-center">
+                        <div class="header-title">
+                            <h4 class="card-title">프로필 수정</h4>
+                        </div>
+                    </div>
+                    <div class="card align-items-center m-1">
+                        <form th:id="profileForm" class="m-3" th:action="@{/member/profile}" th:object="${profile}" th:method="post" th:enctype="|multipart/form-data|">
+                            <div class="form-group row align-items-center">
+                                <div class="col-md-12 d-flex justify-content-center">
+                                    <div class="profile-img-edit">
+                                        <img th:id="showImg" class="profile-pic" th:src="*{profileImg}" alt="profile-pic"
+                                             loading="lazy">
+                                        <div class="p-image d-flex align-items-center justify-content-center">
+                                            <span id="profileImgEdit" class="material-symbols-outlined">edit</span>
+                                            <input th:id="chooseFile" class="file-upload" type="file" accept="image/*"/>
+                                            <input th:field="*{profileImg}" class="file-upload" type="text"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex row align-items-center justify-content-center">
+                                <div class="form-group col-sm-10">
+                                    <label for="fname" class="form-label">닉네임:</label>
+                                    <input th:field="*{profileNickName}" type="text"
+                                           class="form-control" id="fname" placeholder="닉네임을 입력하세요.">
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <button th:id="profileButton" type="submit" class="btn btn-primary me-2">저장</button>
+                                <button th:id="withdrawButton" type="button" class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#withdrawModal">회원 탈퇴</button>
+                            </div>
+                            <div class="modal fade" id="withdrawModal" tabindex="-1" role="dialog" aria-labelledby="withdrawModalTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="withdrawModalTitle">회원 탈퇴</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            회원 탈퇴는 24시간 뒤에 처리됩니다.
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" onclick="location.href='/member/withdraw'" class="btn btn-danger">탈퇴</button>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+                <div id="contentsWrap" th:id="contentsWrap" class="col-lg-8 row m-0 p-0">
+
+                    <div class="col-lg-8 row m-0 p-0" th:if="${blogs == null}">
+                        <div class="col-sm-12">
+                            <div class="card card-block card-stretch card-height">
+                                <div class="card-body">
+                                    <div class="user-post-data">
+                                        <div class="d-flex justify-content-between">
+                                            <div class="me-3">
+                                                <img class="rounded-circle img-fluid" src="/images/popcorn.png" alt=""
+                                                     loading="lazy">
+                                            </div>
+                                            <div class="w-100">
+                                                <div class=" d-flex  justify-content-between">
+                                                    <div class="">
+                                                        <h5 class="mb-0 d-inline-block">좋아요를 누른 글이 없습니다.</h5>
+                                                        <p class="mb-0 text-primary">now</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <p>홈페이지에서 좋아요를 누르면</p>
+                                        <p>이 화면에서 글 작성시간으로 부터</p>
+                                        <p>최대 24시간 보관됩니다.</p>
+                                    </div>
+                                    <div class="comment-area mt-3">
+                                        <hr>
+                                        <form class="comment-text d-flex align-items-center mt-3"
+                                              action="javascript:void(0);">
+                                            <input type="text" class="form-control rounded"
+                                                   placeholder="Enter Your Comment">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div id="contentsChild" th:id="contentsChild" class="col-sm-12" th:each="blog : ${blogs}">
+                        <div class="card card-block card-stretch card-height">
+                            <div class="card-body">
+                                <div class="user-post-data">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="me-3">
+                                            <img class="rounded-circle img-fluid" src="/images/user/04.jpg" alt=""
+                                                 loading="lazy">
+                                        </div>
+                                        <div class="w-100">
+                                            <div class=" d-flex  justify-content-between">
+                                                <div class="">
+                                                    <h5 class="mb-0 d-inline-block" th:text="${blog.getBlogTitle()}">
+                                                        Title</h5>
+                                                    <p class="mb-0 text-primary" th:text="${blog.getBlogDate()}">
+                                                        hour</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-3" th:each="content : ${blog.getBlogContent()}">
+                                    <p th:text="${content}"></p>
+                                </div>
+                                <div class="mt-3">
+                                    <a th:href="${blog.getBlogSource()}"><p
+                                            th:text="|출처 : ${blog.getBlogSource()}|"></p></a>
+                                </div>
+                                <div class="comment-area mt-3">
+                                    <div class="d-flex justify-content-between align-items-center flex-wrap">
+                                        <div class="like-block position-relative d-flex align-items-center">
+                                            <div class="d-flex align-items-center">
+                                                <div class="like-data">
+                                                    <div class="d-flex flex-wrap align-items-center comment-activity">
+                                                        <a sec:authorize="isAnonymous()" th:href="@{/login}"
+                                                           th:text="|좋아요 ${blog.getBlogLikes()}개|">likes</a>
+                                                        <a sec:authorize="isAuthenticated()"
+                                                           th:href="|javascript:blogLike('${blog.getId()}')|"
+                                                           th:text="|좋아요 ${blog.getBlogLikes()}개|"
+                                                           th:id="|like${blog.getId()}|">likes</a>
+                                                        <a th:href="@{/(tag=${blog.getBlogTag()})}"
+                                                           th:text="|#${blog.getBlogTag()}|">Tag</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span th:id="|cmCount${blog.getId()}|"
+                                              th:text="|댓글 ${blog.getComments().size()}|"> Comment Count </span>
+                                    </div>
+                                    <hr>
+                                    <ul th:id="|cmUl${blog.getId()}|" class="post-comments list-inline p-0 m-0">
+                                        <li class="mb-2" th:each="comment : ${blog.getComments()}"
+                                            th:id="|cHead${comment.getId()}|">
+                                            <div class="d-flex">
+                                                <div class="user-img">
+                                                    <img th:src="${comment.getCommentProfile()}" alt="userimg"
+                                                         class="avatar-35 rounded-circle img-fluid" loading="lazy">
+                                                </div>
+                                                <div class="comment-data-block ms-3">
+                                                    <h6 th:text="${comment.getCommentNickname()}">commentNickname</h6>
+                                                    <p class="mb-0"
+                                                       th:each="commentData : ${comment.getCommentContent()}"
+                                                       th:text="${commentData}">commentContent</p>
+                                                    <div class="d-flex flex-wrap align-items-center comment-activity">
+
+                                                        <a sec:authorize="isAnonymous()" th:href="@{/login}"
+                                                           th:text="|좋아요 ${comment.getCommentLikes()}개|">likes</a>
+                                                        <a sec:authorize="isAuthenticated()"
+                                                           th:href="|javascript:commentLike('${comment.getId()}')|"
+                                                           th:text="|좋아요 ${comment.getCommentLikes()}개|"
+                                                           th:id="|clike${comment.getId()}|">likes</a>
+
+                                                        <a sec:authorize="isAnonymous()" href="/login">삭제</a>
+                                                        <a sec:authorize="isAuthenticated()"
+                                                           th:href="|javascript:commentDelete('${blog.getId()}','${comment.getId()}')|"
+                                                           th:id="|cdelete${comment.getId()}|">삭제</a>
+
+                                                        <span th:text="${comment.getCommentDate()}"> 5 min </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <form class="comment-text d-flex align-items-center mt-3"
+                                          action="javascript:void(0);">
+                                        <input type="text" class="form-control rounded"
+                                               placeholder="댓글은 150자 이하입니다." th:id="|cSave${blog.getId()}|">
+                                        <div class="comment-attagement d-flex">
+                                            <a sec:authorize="isAnonymous()" th:href="@{/login}"
+                                               class="material-symbols-outlined me-3">Done</a>
+                                            <a sec:authorize="isAuthenticated()"
+                                               th:href="|javascript:commentSave('${blog.getId()}')|"
+                                               class="material-symbols-outlined me-3">Done</a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Wrapper End-->
+
+
+<div th:insert="~{fragment/footer :: footer}"></div>
+<!-- Backend Bundle JavaScript -->
+<script src="/js/libs.min.js"></script>
+<script src="/js/blog.js"></script>
+<script src="/js/profile.js"></script>
+</body>
+</html>        
